@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "36d2b866-bf65-4ee7-b5b0-1d0e42d86166",
+		"name": "APIs-CategoriaGeneral",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34506296",
+		"_collection_link": "https://red-water-154958.postman.co/workspace/Prueba_completa~b1356669-2455-4d3f-b509-84660b95d0d9/collection/34506296-36d2b866-bf65-4ee7-b5b0-1d0e42d86166?action=share&source=collection_link&creator=34506296"
+	},
+	"item": [
+		{
+			"name": "Crear una categoría general",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Debería devolver un código de estado 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"categoryID\", jsonData.body.id)",
+							"",
+							"pm.test(\"Debería crearse un id nuevo y ser de tipo 'int'\", () => {",
+							"    pm.expect(jsonData.body).to.have.property(\"id\")",
+							"    pm.expect(jsonData.body.id).to.be.an(\"number\");",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"{{$randomFirstName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/{{endpoint_CategoriaGeneral}}/",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"{{endpoint_CategoriaGeneral}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar categoría creada por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Debería devolver un código de estado 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Debería tener una propiedad nombre\", () => {",
+							"    pm.expect(jsonData.body).to.have.property(\"nombre\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/{{endpoint_CategoriaGeneral}}/{{categoryID}}",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"{{endpoint_CategoriaGeneral}}",
+						"{{categoryID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar nombre de categoría",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Debería devolver el valor de la propiedad nombre actualizada\", () => {",
+							"    pm.expect(jsonData.body.nombre).to.equal(\"Nombre_actualizado\")",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nombre\": \"Nombre_actualizado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/{{endpoint_CategoriaGeneral}}/{{categoryID}}",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"{{endpoint_CategoriaGeneral}}",
+						"{{categoryID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "\"Eliminar\" (archivar) una categoría general",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Debería devolver un código de estado 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Debería mostrar el valor de la categoría archivado en true\", () => {",
+							"    pm.expect(jsonData.body.archivado).to.be.equal(true)",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/{{endpoint_CategoriaGeneral}}/archivar/{{categoryID}}",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"{{endpoint_CategoriaGeneral}}",
+						"archivar",
+						"{{categoryID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoia2V5YmVyaHVuZ0BzcG9ydGNsdWIudGVhbSIsImlhdCI6MTcxNDM0MjE3Nn0.ZfVfZQGKGO7HCAdn1bVwApvSRw8gv_m6kuzh7MJR0VA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "categoryID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "endpoint_CategoriaGeneral",
+			"value": "categoria-general",
+			"type": "string"
+		}
+	]
+}
